@@ -13,15 +13,25 @@ const {
   userLoginAdmin,
 } = require("../controllers/Auth/User/AdminUsers");
 const multer = require("multer");
+const fs= require('fs')
 
+
+const directories = ["uploads/userImages"];
+
+
+directories.forEach((dir) => {
+  if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+  }
+});
 const multerStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "uploads/userImages");
+
+      cb(null, "uploads/userImages");
+
   },
   filename: (req, file, cb) => {
-    // const ext = file.mimetype.split("/")[1];
-    // cb(null, `${uuidv4()}-${Date.now()}.${ext}`);
-    cb(null, Date.now() + "_" + file.originalname);
+      cb(null, Date.now() + "_" + file.originalname);
   },
 });
 
