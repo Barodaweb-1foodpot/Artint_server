@@ -46,13 +46,7 @@ exports.createArtPiece = async (req, res) => {
     const artPieceExists = await ArtPiece.findOne({ artName }).exec();
     const artURLPieceExists = await ArtPiece.findOne({ URL_link }).exec();
 
-    if (artPieceExists) {
-      return res.status(200).json({
-        isOk: false,
-        message: "Art piece with this name already exists",
-      });
-    } 
-    else if (artURLPieceExists) {
+    if (artURLPieceExists) {
       return res.status(200).json({
         isOk: false,
         message: "Art URL already exists",
