@@ -36,20 +36,29 @@ exports.createArtPiece = async (req, res) => {
       certificate, 
       frame, 
       link1, 
-      link2, 
+      URL_link, 
       isActive ,
-      category
+      category,
+      artistLastName
     } = req.body;
 
     // Check if art with the same name already exists (you can change this logic if you want to check for email or something else)
     const artPieceExists = await ArtPiece.findOne({ artName }).exec();
+    const artURLPieceExists = await ArtPiece.findOne({ URL_link }).exec();
 
     if (artPieceExists) {
       return res.status(200).json({
         isOk: false,
         message: "Art piece with this name already exists",
       });
-    } else {
+    } 
+    else if (artURLPieceExists) {
+      return res.status(200).json({
+        isOk: false,
+        message: "Art URL already exists",
+      });
+    } 
+    else {
       // Create a new Art Piece
       const newArtPiece = new ArtPiece({
         artistName,
@@ -64,9 +73,10 @@ exports.createArtPiece = async (req, res) => {
         frame,
         artImage,
         link1,
-        link2,
+        URL_link,
         isActive,
-        category // Set to true by default if not provided
+        category,
+        artistLastName,
       });
 
       // Save the new Art Piece
@@ -149,6 +159,9 @@ exports.listArtPieceByParams = async (req, res) => {
               {
                 artistName: { $regex: match, $options: "i" },
               },
+              {
+                artistLastName: { $regex: match, $options: "i" },
+              },
               
             ],
           },
@@ -192,12 +205,15 @@ exports.updateArtPiece = async (req, res) => {
     if (artImage != null) {
       fieldvalues.artImage = artImage;
     }
+   
     const update = await ArtPiece.findOneAndUpdate(
       { _id: req.params._id },
       fieldvalues,
       { new: true }
     );
-    res.json(update);
+    res.json( {isOk: true,
+      data: update,
+      message: "Art piece updated successfully",});
   } catch (err) {
     res.status(400).send(err);
   }
@@ -249,3 +265,11 @@ async function compressImage(file, uploadDir) {
 }
 
  
+exports.getArtPieceByURL = async (req, res) => {
+  try {
+    const find = await ArtPiece.findOne({ URL_link: req.params._url }).exec();
+    res.json(find);
+  } catch (error) {
+    return res.status(500).send(error);
+  }
+};

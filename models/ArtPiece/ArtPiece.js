@@ -5,6 +5,9 @@ const ArtPieceSchema = new mongoose.Schema(
     artistName: {
       type: String,
     },
+    artistLastName: {
+      type: String,
+    },
     artName: {
       type: String,
     },
@@ -37,7 +40,7 @@ const ArtPieceSchema = new mongoose.Schema(
     link1: {
         type: String,
     },
-    link2: {
+    URL_link: {
         type: String,
     },
     category: {

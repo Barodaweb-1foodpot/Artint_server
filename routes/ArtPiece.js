@@ -11,6 +11,7 @@ const {
   updateArtPiece,
   removeArtPiece,
   userLoginAdmin,
+  getArtPieceByURL,
 } = require("../controllers/ArtPiece/ArtPiece");
 const multer = require("multer");
 const path= require('path')
@@ -50,4 +51,5 @@ router.delete("/auth/remove/ArtPiece/:_id", catchAsync(removeArtPiece));
 
 router.post("/adminLogin", catchAsync(userLoginAdmin));
 
+router.get("/auth/get/ArtPieceByURL/:_url", catchAsync(getArtPieceByURL));
 module.exports = router;
