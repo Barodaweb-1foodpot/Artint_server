@@ -185,7 +185,7 @@ exports.removeAdminUser = async (req, res) => {
 exports.userLoginAdmin = async (req, res) => {
   const { email, password } = req.body;
   try {
-    const usermp = await User.findOne({ email: email }).exec();
+    const usermp = await User.findOne({ email: email , IsActive : true}).exec();
     if (usermp) {
       if (usermp.password !== password) {
         return res.status(200).json({
